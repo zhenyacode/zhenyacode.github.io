@@ -1,0 +1,89 @@
+---
+layout: default
+title: Эссе
+---
+
+{% assign seeds = site.essays | where: "status", "seed" | sort: "date" | reverse %}
+{% assign drafts = site.essays | where: "status", "draft" | sort: "date" | reverse %}
+{% assign published = site.essays | where: "status", "published" | sort: "date" | reverse %}
+
+<div class="container">
+  <h1>Эссе и заметки</h1>
+  <p>Здесь представлены мои тексты в разных стадиях готовности: от набросков до развернутых эссе.</p>
+  <p>Я публикую черновики и мысли вслух, чтобы зафиксировать процесс и дать идеям развиваться публично. 
+  Тексты могут дополняться и меняться со временем.</p>
+
+  <div class="kanban">
+    <!-- Колонка Seeds -->
+    <div class="kanban-column">
+      <div class="column-header">
+        <h3>Задумки</h3>
+        <!-- <span>{{ seeds.size }}</span> -->
+      </div>
+      <div class="column-content">
+        {% if seeds.size > 0 %}
+          <ul class="essay-list">
+            {% for essay in seeds %}
+              <li>
+                <a href="{{ essay.url | relative_url }}">{{ essay.title }}</a>
+                <time>{{ essay.date | date: "%d.%m.%Y" }}</time>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty-state">Пока пусто</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Колонка Drafts -->
+    <div class="kanban-column">
+      <div class="column-header">
+        <h3>Черновики</h3>
+        <!-- <span>{{ drafts.size }}</span> -->
+      </div>
+      <div class="column-content">
+        {% if drafts.size > 0 %}
+          <ul class="essay-list">
+            {% for essay in drafts %}
+              <li>
+                <a href="{{ essay.url | relative_url }}">{{ essay.title }}</a>
+                <time>{{ essay.date | date: "%d.%m.%Y" }}</time>
+                {% if essay.updated %}
+                  <span class="card-meta">• обновлено {{ essay.updated | date: "%d.%m" }}</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty-state">Пока пусто</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Колонка Published -->
+    <div class="kanban-column">
+      <div class="column-header">
+        <h3>Готовое</h3>
+        <!-- <span>{{ published.size }}</span> -->
+      </div>
+      <div class="column-content">
+        {% if published.size > 0 %}
+          <ul class="essay-list">
+            {% for essay in published %}
+              <li>
+                <a href="{{ essay.url | relative_url }}">{{ essay.title }}</a>
+                <time>{{ essay.date | date: "%d.%m.%Y" }}</time>
+                {% if essay.series %}
+                  <span class="series-badge">{{ essay.series }}</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty-state">Пока пусто</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
